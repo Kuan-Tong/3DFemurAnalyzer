@@ -5,7 +5,6 @@ global s R T
 % for i = 1 : length(D)
 %     load(['' D(i).name]);
 % end
-% load D:\123\femur\fracture_prediction\fraction_pointcloud\health_mean.mat
 %% 
 % load M1;
 % M1 = health_mean;
