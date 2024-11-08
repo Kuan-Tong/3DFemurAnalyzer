@@ -1,0 +1,35 @@
+% close all
+% clear all
+% clc
+global s R T
+% for i = 1 : length(D)
+%     load(['' D(i).name]);
+% end
+% load D:\123\femur\fracture_prediction\fraction_pointcloud\health_mean.mat
+%% 
+% load M1;
+% M1 = health_mean;
+M1 = health0;
+% load M2;
+M2 = health3;
+% M2 = fracture104;
+plot_3d_3(M1, M2);
+M3=fSICP3D(M1, M2);
+plot_3d_3(M1, M3);
+
+%M3=M2()
+
+% R = R.';
+R = R;
+S = diag(1./s);
+T = -T;
+T = R*S*T;
+S(4,4) = 1;R(4,4) = 1;T = [T;1]';
+TM = R * S;
+TM(4,:) = T;
+print()
+mriVolume = squeeze(health3);
+tform = affine3d(TM);
+mriVolumeRotated3 = imwarp(mriVolume,tform,'linear');
+
+
