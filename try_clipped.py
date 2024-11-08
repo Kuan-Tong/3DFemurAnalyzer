@@ -19,7 +19,7 @@ class Ui_MainWindow(QMainWindow):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
-        self.gridlayout = QtWidgets.QGridLayout(self.centralwidget)                  #网格布局类
+        self.gridlayout = QtWidgets.QGridLayout(self.centralwidget)                
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.vtkWidget = QVTKRenderWindowInteractor(self.centralwidget)
         self.textEdit = QTextEdit()
@@ -54,10 +54,10 @@ class Ui_MainWindow(QMainWindow):
         # self.actionUndo = QtWidgets.QAction(MainWindow)
         # self.actionUndo.setObjectName("actionUndo")
         self.buttonDown = QtWidgets.QPushButton("Save")
-        self.gridlayout.addWidget(self.buttonDown, 100, 50, 1, 1)         #网格布局类
+        self.gridlayout.addWidget(self.buttonDown, 100, 50, 1, 1)        
         self.buttonDown1 = QtWidgets.QPushButton("Save_Clipped")
-        self.gridlayout.addWidget(self.buttonDown1, 100, 55, 1, 1)  # 网格布局类
-        # self.gridlayout.addWidget(self.buttonDown, 0,  Qt.AlignBottom )           # 水平布局类
+        self.gridlayout.addWidget(self.buttonDown1, 100, 55, 1, 1)  
+        # self.gridlayout.addWidget(self.buttonDown, 0,  Qt.AlignBottom )      
         self.number = 0
         self.buttonDown.clicked.connect(self.about)
         self.buttonDown1.clicked.connect(self.save_clipped)
@@ -126,8 +126,8 @@ class Ui_MainWindow(QMainWindow):
         self.textEdit.append("save clipped")
 
     def about(self):
-        # insertHtml(str)插入文本是将文本插入到光标处
-        # append(str)追加文本是将文本追加到文本末尾
+        # insertHtml(str)
+        # append(str)
         # print(self.textEdit.toPlainText())
 
         self.number = self.number + 1
@@ -197,7 +197,6 @@ class Ui_MainWindow(QMainWindow):
             os.makedirs(save_path)
 
     def femur_seg(self,img_path, save_path, normal, point, normal1, point1, normal2, point2):
-        # 输入的npy格式是一般是（x,y,z）,我们要将其转换为(y,x,z)
         data = self.get_image_data(img_path, 0)
         print(data.shape)
         data = data.transpose((2, 1, 0))
@@ -208,14 +207,12 @@ class Ui_MainWindow(QMainWindow):
         mask_neck = np.zeros(data.shape)
         mask_tro = np.zeros(data.shape)
         a11 = np.zeros((data.shape[0], data.shape[1], data.shape[2], 3))
-        # 建立坐标矩阵，大小为[x * y * z * 3]
         for i in range(0, data.shape[0]):
             point_index[i, :, :, 0] = i
         for j in range(0, data.shape[1]):
             point_index[:, j, :, 1] = j
         for k in range(0, data.shape[2]):
             point_index[:, :, k, 2] = k
-        # 判断点在法向量的哪个方向，大于0在上方，小于0在下方
         #####################################
         # get FH
         point_index_tmp = point_index.copy()
@@ -294,7 +291,6 @@ class Ui_MainWindow(QMainWindow):
         self.skin.GetProperty().SetDiffuseColor(1, .19, .15)
         self.skin.SetMapper(self.skinMapper)
 
-        # 定义一个图像边界控件
         self.outlineData = vtk.vtkOutlineFilter()
         self.outlineData.SetInputConnection(self.Reader.GetOutputPort())
 
@@ -324,11 +320,9 @@ class Ui_MainWindow(QMainWindow):
         self.style = vtk.vtkInteractorStyleTrackballCamera()
         self.iren.SetInteractorStyle(self.style)
 
-        # 定义切割器
         global cliper
         self.cliper = vtk.vtkClipPolyData()
         self.cliper.SetInputData(self.skinStripper.GetOutput())
-        # 定义平面隐函数
         self.implicitPlaneWidget = vtk.vtkImplicitPlaneWidget()
         self.implicitPlaneWidget.SetInteractor(self.iren)
         self.implicitPlaneWidget.SetPlaceFactor(1.25)
@@ -373,13 +367,10 @@ class Ui_MainWindow(QMainWindow):
         if pWidget:
             # print(pWidget.GetClassName(), "Event Id:", ev)
             self.planeNew = vtk.vtkPlane()
-            # 获得pWidget中的平面，将平面值赋值planeNew
             pWidget.GetPlane(self.planeNew)
-            # cliper将裁剪器cliper的平面设置为planeNew
             self.cliper.SetClipFunction(self.planeNew)
             self.planeNew.GetNormal()
             self.cliper.Update()
-            # 将裁减后的模型传递给另一个窗口
             self.clipedData = vtk.vtkPolyData()
             self.clipedData.DeepCopy(self.cliper.GetOutput())
 
