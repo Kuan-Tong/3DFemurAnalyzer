@@ -1,3 +1,3 @@
 # 3DFemurAnalyzer
-3DFemurAnalyzer is an open-source toolkit for semantic segmentation of complex femoral structures in 3D images. Once our work is accepted for publication in a journal, we will make it open source.
+This repository contains the implementation of an improved Scaling Iterative Closest Point (SICP) algorithm for precise local registration of femoral point cloud models. Additionally, it includes a Statistical Shape Model (SSM) based on Principal Component Analysis (PCA) and an interactive Graphical User Interface (GUI) for segmentation and morphological analysis of femoral fractures in 3D images.
 
